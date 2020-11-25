@@ -22,7 +22,7 @@ public class Customer {
     private String contact;
     private String password;
 
-    @ManyToMany(cascade = CascadeType.DETACH)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Set<Address> addresses;
 
     public void setAddresses (Address address) {
