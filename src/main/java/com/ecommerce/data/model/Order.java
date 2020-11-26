@@ -19,7 +19,7 @@ public class Order {
 
     private String date;
     private boolean delivered;
-    private boolean status;
+    private boolean canceled;
 
     @ManyToMany
     private List<Product> products;
