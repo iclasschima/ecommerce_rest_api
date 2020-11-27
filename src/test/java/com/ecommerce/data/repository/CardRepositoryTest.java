@@ -1,5 +1,6 @@
 package com.ecommerce.data.repository;
 
+import com.ecommerce.data.exceptions.CardException;
 import com.ecommerce.data.model.Card;
 import com.ecommerce.data.model.Customer;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,19 @@ class CardRepositoryTest {
     }
 
     @Test
+    void testSaveCardWithoutCustomer () {
+        card.setCardName("Fola Ope");
+        card.setCardNumber("201002333444");
+        card.setCardType("MasterCard");
+        card.setCvv(230);
+        card.setExpDate("1-10-24");
+
+        assertThrows(CardException.class, ()-> {
+            cardRepository.saveCard(card);
+        });
+    }
+
+    @Test
     void testThatOneCustomerCanHaveMultipleCards () {
         card = cardRepository.findById(2).orElse(null);
         assert card != null;
@@ -59,13 +73,7 @@ class CardRepositoryTest {
         assert customer != null;
 
         card.setCustomer(customer);
-
-        cardRepository.save(card);
-
-        assertThat(card.getId()).isNotNull();
-        assertThat(card.getCustomer()).isNotNull();
-
-        log.info("card -> {}", card);
+        assertDoesNotThrow(() -> {cardRepository.save(card); });
     }
 
 }

@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
-
-import javax.persistence.Access;
-import javax.security.auth.login.AccountException;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,23 +40,10 @@ class CustomerRepositoryTest {
         customer.setLastName("Chima");
         customer.setPassword("iclass123");
 
-        Address address = new Address();
-
-        address.setZipcode("001001");
-        address.setStreet("Folarin street");
-        address.setCountry("Nigeria");
-        address.setCity("Lagos");
-        address.setState("Lagos");
-
+        Address address = addressRepository.findById(1).orElse(null);
         customer.setAddresses(address);
 
-        log.info("customer before saving -> {}", customer);
-
-        customerRepository.save(customer);
-        assertThat(customer.getId()).isNotNull();
-
-        log.info("customer after saving -> {}", customer);
-
+        assertDoesNotThrow(() -> customerRepository.saveCustomer(customer));
     }
 
     @Test
@@ -67,15 +51,9 @@ class CustomerRepositoryTest {
        customer = customerRepository.findById(2).orElse(null);
 
         Address address = addressRepository.findById(1).orElse(null);
-
         customer.setAddresses(address);
 
-        customerRepository.save(customer);
-
-        log.info("customer -> {}", customer);
-
-        assertThat(customer.getId()).isNotNull();
-        assertThat(customer.getAddresses()).isNotEmpty();
+        assertDoesNotThrow(() -> customerRepository.saveCustomer(customer));
     }
 
     @Test
@@ -88,10 +66,7 @@ class CustomerRepositoryTest {
 
         customer.setAddresses(address);
 
-        customerRepository.save(customer);
-
-        log.info("customer -> {}", customer);
-
+        assertDoesNotThrow(() -> customerRepository.saveCustomer(customer));
         assertThat(customer.getAddresses().size()).isEqualTo(2);
     }
 
@@ -129,13 +104,10 @@ class CustomerRepositoryTest {
     @Test
     void testThatWeCanUpdateCustomerDetails () {
         customer = customerRepository.findById(2).orElse(null);
-
         customer.setPassword("tobi123");
 
-        customerRepository.save(customer);
-
+        assertDoesNotThrow(() -> customerRepository.saveCustomer(customer));
         assertThat(customer.getPassword()).isEqualTo("tobi123");
-
     }
 
 }

@@ -9,7 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+import java.util.Optional;
 import static org.mockito.Mockito.*;
 
 class OrderServiceImplTest {
@@ -33,5 +34,33 @@ class OrderServiceImplTest {
         when(orderRepository.saveOrder(order)).thenReturn(order);
         orderService.saveOrder(null);
         verify(orderRepository, times(0)).saveOrder(order);
+    }
+
+    @Test
+    void testThatWeCanCallTheDeleteOrderByIdRepository () {
+        doNothing().when(orderRepository).deleteById(1);
+        orderService.deleteOrderById(1);
+        verify(orderRepository, times(1)).deleteById(1);
+    }
+
+    @Test
+    void testThatWeCanCallTheFindOrderByIdRepository () {
+        when(orderRepository.findById(1)).thenReturn(Optional.of(order));
+        orderService.findOrderById(1);
+        verify(orderRepository, times(1)).findById(1);
+    }
+
+    @Test
+    void testThatWeCanCallTheUpdateOrderRepository () throws OrderException {
+        when(orderRepository.saveOrder(order)).thenReturn(order);
+        orderService.saveOrder(order);
+        verify(orderRepository, times(1)).saveOrder(order);
+    }
+
+    @Test
+    void testThatWeCanCallTheFindAllOrderRepository () {
+        when(orderRepository.findAll()).thenReturn(List.of(order));
+        orderService.findAllOrders();
+        verify(orderRepository, times(1)).findAll();
     }
 }

@@ -23,7 +23,7 @@ public class Customer {
     private String contact;
     private String password;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany
     @ToString.Exclude
     private Set<Address> addresses;
 

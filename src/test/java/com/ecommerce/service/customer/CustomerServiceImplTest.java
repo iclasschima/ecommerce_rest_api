@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -40,6 +41,27 @@ class CustomerServiceImplTest {
         when(customerRepository.findById(1)).thenReturn(Optional.of(customer));
         customerService.findByCustomerId(1);
         verify(customerRepository, times(1)).findById(1);
+    }
+
+    @Test
+    void testThatWeCanCallFindAllCustomerRepository () {
+        when(customerRepository.findAll()).thenReturn(List.of(customer));
+        customerService.findAllCustomer();
+        verify(customerRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testThatWeCanCallDeleteCustomerRepository () {
+        doNothing().when(customerRepository).deleteById(1);
+        customerService.deleteCustomerById(1);
+        verify(customerRepository, times(1)).deleteById(1);
+    }
+
+    @Test
+    void testThatWeCanCallTheUpdateCustomerRepository () {
+        when(customerRepository.save(customer)).thenReturn(customer);
+        customerService.updateCustomer(customer);
+        verify(customerRepository, times(1)).save(customer);
     }
 
 }

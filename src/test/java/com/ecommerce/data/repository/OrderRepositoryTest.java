@@ -46,10 +46,7 @@ class OrderRepositoryTest {
         order.setCustomer(customer);
         order.setProducts(products);
 
-        orderRepository.save(order);
-
-        assertNotNull(order);
-        assertNotNull(order.getId());
+        assertDoesNotThrow(() ->  orderRepository.saveOrder(order));
 
     }
 

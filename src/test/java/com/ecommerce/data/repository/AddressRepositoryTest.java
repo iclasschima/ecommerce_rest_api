@@ -1,12 +1,15 @@
 package com.ecommerce.data.repository;
 
 import com.ecommerce.data.model.Address;
+import com.ecommerce.data.model.Customer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,6 +22,8 @@ class AddressRepositoryTest {
     @Autowired
     AddressRepository addressRepository;
 
+    @Autowired CustomerRepository customerRepository;
+
     Address address;
 
     @BeforeEach
@@ -27,6 +32,8 @@ class AddressRepositoryTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(value = false)
     void testThatWeCanSaveAnAddress () {
         address.setState("Lagos");
         address.setCity("Yaba");
@@ -34,12 +41,10 @@ class AddressRepositoryTest {
         address.setStreet("312 Herbert Macaulay way, Sabo");
         address.setZipcode("1100110");
 
-        log.info("address before saving -> {}", address);
+        Customer customer = customerRepository.findById(1).orElse(null);
+        address.setCustomers(customer);
 
-        addressRepository.save(address);
-        assertThat(address.getId()).isNotNull();
-
-        log.info("address after saving -> {}", address);
+        assertDoesNotThrow(() ->  addressRepository.saveAddress(address));
     }
 
     @Test
