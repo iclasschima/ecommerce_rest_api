@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,15 +21,14 @@ public class Address {
     private String city;
     private String zipcode;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "addresses")
     @ToString.Exclude
-    private Set<Customer> customers;
+    private List<Customer> customers;
 
-    public void setCustomers (Customer cusomer) {
+    public void setCustomers (Customer customer) {
         if (customers == null) {
-            customers = new HashSet<>();
+            customers = new ArrayList<>();
         }
-        customers.add(cusomer);
+        customers.add(customer);
     }
-
 }

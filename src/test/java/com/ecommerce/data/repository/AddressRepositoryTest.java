@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
+@Sql(scripts = "classpath:db/insert.sql")
 class AddressRepositoryTest {
 
     @Autowired
@@ -41,7 +43,7 @@ class AddressRepositoryTest {
         address.setStreet("312 Herbert Macaulay way, Sabo");
         address.setZipcode("1100110");
 
-        Customer customer = customerRepository.findById(1).orElse(null);
+        Customer customer = customerRepository.findById(1).get();
         address.setCustomers(customer);
 
         assertDoesNotThrow(() ->  addressRepository.saveAddress(address));

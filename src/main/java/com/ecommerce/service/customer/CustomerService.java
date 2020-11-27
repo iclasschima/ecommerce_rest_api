@@ -1,6 +1,7 @@
 package com.ecommerce.service.customer;
 
 import com.ecommerce.data.model.Customer;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

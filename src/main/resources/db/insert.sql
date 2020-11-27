@@ -16,7 +16,7 @@ values (1, "09031861100", "iclasschima@gmail.com", "iClass", "Chima", "iclass123
        (2, "08023237911", "tobifemi@gmail.com", "Femi", "Tobi", "tobi123");
 
 
-insert into customer_addresses (`customer_id`, `addresses_id`)
+insert into customer_addresses (`customers_id`, `addresses_id`)
 values (1, 1),
        (1, 2),
        (2, 2);

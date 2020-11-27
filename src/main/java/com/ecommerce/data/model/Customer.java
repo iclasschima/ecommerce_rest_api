@@ -6,6 +6,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,20 +24,21 @@ public class Customer {
     private String contact;
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
-    private Set<Address> addresses;
+    private List<Address> addresses;
 
     @OneToMany(mappedBy = "customer")
     @ToString.Exclude
     private Set<Card> cards;
 
     @OneToMany(mappedBy = "customer")
+    @ToString.Exclude
     private Set<Order> orders;
 
     public void setAddresses (Address address) {
         if (addresses == null) {
-            addresses = new HashSet<>();
+            addresses = new ArrayList<>();
         }
         addresses.add(address);
     }
