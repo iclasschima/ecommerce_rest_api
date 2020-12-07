@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.jdbc.Sql;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-@Sql(scripts = "classpath:db/insert.sql")
+// @Sql(scripts = "classpath:db/insert.sql")
 class CustomerRepositoryTest {
 
     @Autowired
@@ -39,9 +38,6 @@ class CustomerRepositoryTest {
         customer.setFirstName("iClass");
         customer.setLastName("Chima");
         customer.setPassword("iclass123");
-
-        Address address = addressRepository.findById(1).orElse(null);
-        customer.setAddresses(address);
 
         assertDoesNotThrow(() -> customerRepository.saveCustomer(customer));
     }
@@ -108,6 +104,20 @@ class CustomerRepositoryTest {
 
         assertDoesNotThrow(() -> customerRepository.saveCustomer(customer));
         assertThat(customer.getPassword()).isEqualTo("tobi123");
+    }
+
+
+    @Test
+    void testDeleteCustomerById () {
+        assertTrue(customerRepository.existsById(1));
+        customerRepository.deleteById(1);
+        assertFalse(customerRepository.existsById(1));
+    }
+
+    @Test
+    void testFetchAllCustomer () {
+        log.info("Customers -> {}",  customerRepository.findAll());
+
     }
 
 }

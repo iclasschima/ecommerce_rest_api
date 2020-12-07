@@ -1,5 +1,6 @@
 package com.ecommerce.service.product;
 
+import com.ecommerce.data.exceptions.ProductException;
 import com.ecommerce.data.model.Product;
 import com.ecommerce.data.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
 
     @Override
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
+    public Product saveProduct(Product product) throws ProductException {
+        return productRepository.saveProduct(product);
     }
 
     @Override
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        return productRepository.save(product);
+    public Product updateProduct(Product product) throws ProductException {
+        return productRepository.saveProduct(product);
     }
 }

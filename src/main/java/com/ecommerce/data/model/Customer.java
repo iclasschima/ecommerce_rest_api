@@ -24,13 +24,9 @@ public class Customer {
     private String contact;
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @ToString.Exclude
     private List<Address> addresses;
-
-    @OneToMany(mappedBy = "customer")
-    @ToString.Exclude
-    private Set<Card> cards;
 
     @OneToMany(mappedBy = "customer")
     @ToString.Exclude
@@ -41,13 +37,6 @@ public class Customer {
             addresses = new ArrayList<>();
         }
         addresses.add(address);
-    }
-
-    public void setCards (Card card) {
-        if (cards == null) {
-            cards = new HashSet<>();
-        }
-        cards.add(card);
     }
 
 }
